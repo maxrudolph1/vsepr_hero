@@ -30,16 +30,50 @@ def analyzeImage(image_filename):
             # rect_image = cv2.rectangle(image, (x, y), (x + w, y + h), (255,0,0), 2)
             # displayImage(rect_image)
 
-    findBonds(image, bounding_boxes)
+    bonds = findBonds(image, bounding_boxes)
+
+
+
+
 
 def findBonds(image, bounding_boxes):
-    box_centers = [(x[0] + x[2]/2, x[1] + x[3]/2) for x in bounding_boxes]
-    combos = list(itertools.combinations(box_centers, 3))
-    for combo in combos:
-        x_coors = [x[0] for x in combo]
-        y_coors = [x[1] for x in combo]
-        slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(x_coors, y_coors)
-        drawRelation(image, combo, slope, intercept, r_value, p_value, std_err)
+        box_centers = [(x[0] + x[2]/2, x[1] + x[3]/2) for x in bounding_boxes]
+        combos = list(itertools.combinations(box_centers, 3))
+        bonds = []
+        for combo in combos:
+                x_coors = [x[0] for x in combo]
+                y_coors = [x[1] for x in combo]
+                slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(x_coors, y_coors)
+                if abs(r_value) > .97:
+                        bonds = [bonds, combo]
+                drawRelation(image, combo, slope, intercept, r_value, p_value, std_err)
+        
+        return bonds
+
+def imageEquality(image1, image2):
+
+
+        if len(image1.shape) == 3:
+                cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+
+        if len(image2.shape) == 3:
+                cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+        
+        r = len(image1)
+        c = len(image1[0])
+
+        image2 = cv2.resize(image2, r,c)
+        count = 0
+        for i in range(0, r):
+                for k in range(0,c):
+                       count = count + abs(image1[i,k] - image2[i][k]) 
+        
+        if count / (r * c) > .1:
+                return False
+        else:
+                return True
+
+        
     
 
 def drawRelation(image, combo, slope, intercept, r_value, p_value, std_err):
