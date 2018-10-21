@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "VESPER_hero_python/bin/python",
+    "python.linting.pylintEnabled": false,
+    "git.ignoreLimitWarning": true
+}
