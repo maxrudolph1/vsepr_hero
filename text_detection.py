@@ -29,3 +29,13 @@ def getString(img):
         else:
             return ''
     return std
+
+
+
+# contour_image = cv2.drawContours(raw_image, contours, -1, (255, 0, 0), 10)
+# rect_image = cv2.rectangle(raw_image, (x, y), (x + w, y + h), (255,0,0), 2)
+
+# print(len(valid_lines))
+#     combos = list(itertools.combinations(valid_lines, 2))
+#     for combo in combos:
+#         drawColinearRelation(original_image, combo[0]["combo"], combo[0]["slope"], combo[0]["intercept"], combo[1]["combo"], combo[1]["slope"], combo[1]["intercept"])
